@@ -55,7 +55,7 @@ def generate_launch_description():
         executable='rviz2',
         name='tare_planner_ground_rviz',
         arguments=[
-            '-d', get_package_share_directory('tare_planner')+'/tare_planner_ground.rviz'],
+            '-d', get_package_share_directory('tare_planner')+'/multi_tare_planner_ground.rviz'],
         condition=IfCondition(LaunchConfiguration('rviz'))
     )
 

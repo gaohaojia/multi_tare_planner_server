@@ -24,34 +24,6 @@ namespace sensor_coverage_planner_3d_ns {
 
 // bool PlannerParameters::ReadParameters(rclcpp::Node::SharedPtr node_)
 void SensorCoveragePlanner3D::ReadParameters() {
-  this->declare_parameter<std::string>("sub_start_exploration_topic_",
-                                       "/exploration_start");
-  this->declare_parameter<std::string>("sub_state_estimation_topic_",
-                                       "/state_estimation_at_scan");
-  this->declare_parameter<std::string>("sub_registered_scan_topic_",
-                                       "/registered_scan");
-  this->declare_parameter<std::string>("sub_terrain_map_topic_",
-                                       "/terrain_map");
-  this->declare_parameter<std::string>("sub_terrain_map_ext_topic_",
-                                       "/terrain_map_ext");
-  this->declare_parameter<std::string>("sub_coverage_boundary_topic_",
-                                       "/coverage_boundary");
-  this->declare_parameter<std::string>("sub_viewpoint_boundary_topic_",
-                                       "/navigation_boundary");
-  this->declare_parameter<std::string>("sub_nogo_boundary_topic_",
-                                       "/nogo_boundary");
-  this->declare_parameter<std::string>("sub_joystick_topic_", "/joy");
-  this->declare_parameter<std::string>("sub_reset_waypoint_topic_",
-                                       "/reset_waypoint");
-  this->declare_parameter<std::string>("pub_exploration_finish_topic_",
-                                       "exploration_finish");
-  this->declare_parameter<std::string>("pub_runtime_breakdown_topic_",
-                                       "runtime_breakdown");
-  this->declare_parameter<std::string>("pub_runtime_topic_", "/runtime");
-  this->declare_parameter<std::string>("pub_waypoint_topic_", "/way_point");
-  this->declare_parameter<std::string>("pub_momentum_activation_count_topic_",
-                                       "momentum_activation_count");
-
   // Bool
   this->declare_parameter<bool>("kAutoStart", false);
   this->declare_parameter<bool>("kRushHome", false);
@@ -93,19 +65,13 @@ void SensorCoveragePlanner3D::ReadParameters() {
 
   // keypose_graph
   this->declare_parameter<double>("keypose_graph/kAddNodeMinDist", 0.5);
-  this->declare_parameter<double>("keypose_graph/kAddNonKeyposeNodeMinDist",
-                                  0.5);
+  this->declare_parameter<double>("keypose_graph/kAddNonKeyposeNodeMinDist", 0.5);
   this->declare_parameter<double>("keypose_graph/kAddEdgeConnectDistThr", 0.5);
-  this->declare_parameter<double>("keypose_graph/kAddEdgeToLastKeyposeDistThr",
-                                  0.5);
-  this->declare_parameter<double>("keypose_graph/kAddEdgeVerticalThreshold",
-                                  0.5);
-  this->declare_parameter<double>(
-      "keypose_graph/kAddEdgeCollisionCheckResolution", 0.5);
-  this->declare_parameter<double>("keypose_graph/kAddEdgeCollisionCheckRadius",
-                                  0.5);
-  this->declare_parameter<int>(
-      "keypose_graph/kAddEdgeCollisionCheckPointNumThr", 1);
+  this->declare_parameter<double>("keypose_graph/kAddEdgeToLastKeyposeDistThr", 0.5);
+  this->declare_parameter<double>("keypose_graph/kAddEdgeVerticalThreshold", 0.5);
+  this->declare_parameter<double>("keypose_graph/kAddEdgeCollisionCheckResolution", 0.5);
+  this->declare_parameter<double>("keypose_graph/kAddEdgeCollisionCheckRadius", 0.5);
+  this->declare_parameter<int>("keypose_graph/kAddEdgeCollisionCheckPointNumThr", 1);
 
   // local_coverage_planner
   this->declare_parameter<int>("kGreedyViewPointSampleRange", 5);
@@ -152,8 +118,7 @@ void SensorCoveragePlanner3D::ReadParameters() {
   this->declare_parameter<bool>("kCheckDynamicObstacleCollision", true);
   this->declare_parameter<int>("kCollisionFrameCountMax", 3);
   this->declare_parameter<double>("kViewPointHeightFromTerrain", 0.75);
-  this->declare_parameter<double>("kViewPointHeightFromTerrainChangeThreshold",
-                                  0.6);
+  this->declare_parameter<double>("kViewPointHeightFromTerrainChangeThreshold", 0.6);
   this->declare_parameter<int>("kCollisionPointThr", 3);
   this->declare_parameter<double>("kCoverageOcclusionThr", 1.0);
   this->declare_parameter<double>("kCoverageDilationRadius", 1.0);
@@ -162,8 +127,7 @@ void SensorCoveragePlanner3D::ReadParameters() {
   this->declare_parameter<double>("kNeighborRange", 3.0);
 
   // tare_visualizer
-  this->declare_parameter<bool>("kExploringSubspaceMarkerColorGradientAlpha",
-                                true);
+  this->declare_parameter<bool>("kExploringSubspaceMarkerColorGradientAlpha", true);
   this->declare_parameter<double>("kExploringSubspaceMarkerColorMaxAlpha", 1.0);
   this->declare_parameter<double>("kExploringSubspaceMarkerColorR", 0.0);
   this->declare_parameter<double>("kExploringSubspaceMarkerColorG", 1.0);
@@ -176,34 +140,6 @@ void SensorCoveragePlanner3D::ReadParameters() {
   this->declare_parameter<double>("kLocalPlanningHorizonMarkerWidth", 0.3);
   this->declare_parameter<double>("kLocalPlanningHorizonHeight", 3.0);
 
-  bool got_parameter = true;
-  got_parameter &= this->get_parameter("sub_start_exploration_topic_",
-                                       sub_start_exploration_topic_);
-  if (!got_parameter) {
-    std::cout << "Failed to get parameter sub_start_exploration_topic_"
-              << std::endl;
-  }
-  this->get_parameter("sub_state_estimation_topic_",
-                      sub_state_estimation_topic_);
-  this->get_parameter("sub_registered_scan_topic_", sub_registered_scan_topic_);
-  this->get_parameter("sub_terrain_map_topic_", sub_terrain_map_topic_);
-  this->get_parameter("sub_terrain_map_ext_topic_", sub_terrain_map_ext_topic_);
-  this->get_parameter("sub_coverage_boundary_topic_",
-                      sub_coverage_boundary_topic_);
-  this->get_parameter("sub_viewpoint_boundary_topic_",
-                      sub_viewpoint_boundary_topic_);
-  this->get_parameter("sub_nogo_boundary_topic_", sub_nogo_boundary_topic_);
-  this->get_parameter("sub_joystick_topic_", sub_joystick_topic_);
-  this->get_parameter("sub_reset_waypoint_topic_", sub_reset_waypoint_topic_);
-  this->get_parameter("pub_exploration_finish_topic_",
-                      pub_exploration_finish_topic_);
-  this->get_parameter("pub_runtime_breakdown_topic_",
-                      pub_runtime_breakdown_topic_);
-  this->get_parameter("pub_runtime_topic_", pub_runtime_topic_);
-  this->get_parameter("pub_waypoint_topic_", pub_waypoint_topic_);
-  this->get_parameter("pub_momentum_activation_count_topic_",
-                      pub_momentum_activation_count_topic_);
-
   this->get_parameter("kAutoStart", kAutoStart);
 
   std::cout << "parameter kAutoStart: " << kAutoStart << std::endl;
@@ -212,26 +148,19 @@ void SensorCoveragePlanner3D::ReadParameters() {
   this->get_parameter("kUseTerrainHeight", kUseTerrainHeight);
   this->get_parameter("kCheckTerrainCollision", kCheckTerrainCollision);
   this->get_parameter("kExtendWayPoint", kExtendWayPoint);
-  this->get_parameter("kUseLineOfSightLookAheadPoint",
-                      kUseLineOfSightLookAheadPoint);
+  this->get_parameter("kUseLineOfSightLookAheadPoint", kUseLineOfSightLookAheadPoint);
   this->get_parameter("kNoExplorationReturnHome", kNoExplorationReturnHome);
   this->get_parameter("kUseMomentum", kUseMomentum);
-
-  this->get_parameter("kKeyposeCloudDwzFilterLeafSize",
-                      kKeyposeCloudDwzFilterLeafSize);
+  this->get_parameter("kKeyposeCloudDwzFilterLeafSize", kKeyposeCloudDwzFilterLeafSize);
   this->get_parameter("kRushHomeDist", kRushHomeDist);
   this->get_parameter("kAtHomeDistThreshold", kAtHomeDistThreshold);
   this->get_parameter("kTerrainCollisionThreshold", kTerrainCollisionThreshold);
   this->get_parameter("kLookAheadDistance", kLookAheadDistance);
   this->get_parameter("kExtendWayPointDistanceBig", kExtendWayPointDistanceBig);
-  this->get_parameter("kExtendWayPointDistanceSmall",
-                      kExtendWayPointDistanceSmall);
-
+  this->get_parameter("kExtendWayPointDistanceSmall", kExtendWayPointDistanceSmall);
   this->get_parameter("kDirectionChangeCounterThr", kDirectionChangeCounterThr);
-  this->get_parameter("kDirectionNoChangeCounterThr",
-                      kDirectionNoChangeCounterThr);
-  this->get_parameter("kResetWaypointJoystickButton",
-                      kResetWaypointJoystickButton);
+  this->get_parameter("kDirectionNoChangeCounterThr", kDirectionNoChangeCounterThr);
+  this->get_parameter("kResetWaypointJoystickButton", kResetWaypointJoystickButton);
 }
 
 // PlannerData::PlannerData()
@@ -389,48 +318,48 @@ bool SensorCoveragePlanner3D::initialize() {
       1000ms, std::bind(&SensorCoveragePlanner3D::execute, this));
 
   exploration_start_sub_ = this->create_subscription<std_msgs::msg::Bool>(
-      sub_start_exploration_topic_, 5,
+      "start_exploration", 5,
       std::bind(&SensorCoveragePlanner3D::ExplorationStartCallback, this,
                 std::placeholders::_1));
   registered_scan_sub_ =
       this->create_subscription<sensor_msgs::msg::PointCloud2>(
-          sub_registered_scan_topic_, 5,
+          "registered_scan", 5,
           std::bind(&SensorCoveragePlanner3D::RegisteredScanCallback, this,
                     std::placeholders::_1));
   terrain_map_sub_ = this->create_subscription<sensor_msgs::msg::PointCloud2>(
-      sub_terrain_map_topic_, 5,
+      "terrain_map", 5,
       std::bind(&SensorCoveragePlanner3D::TerrainMapCallback, this,
                 std::placeholders::_1));
   terrain_map_ext_sub_ =
       this->create_subscription<sensor_msgs::msg::PointCloud2>(
-          sub_terrain_map_ext_topic_, 5,
+          "terrain_map_ext", 5,
           std::bind(&SensorCoveragePlanner3D::TerrainMapExtCallback, this,
                     std::placeholders::_1));
   state_estimation_sub_ = this->create_subscription<nav_msgs::msg::Odometry>(
-      sub_state_estimation_topic_, 5,
+      "state_estimation_at_scan", 5,
       std::bind(&SensorCoveragePlanner3D::StateEstimationCallback, this,
                 std::placeholders::_1));
   coverage_boundary_sub_ =
       this->create_subscription<geometry_msgs::msg::PolygonStamped>(
-          sub_coverage_boundary_topic_, 5,
+          "sensor_coverage_planner/coverage_boundary", 5,
           std::bind(&SensorCoveragePlanner3D::CoverageBoundaryCallback, this,
                     std::placeholders::_1));
   viewpoint_boundary_sub_ =
       this->create_subscription<geometry_msgs::msg::PolygonStamped>(
-          sub_viewpoint_boundary_topic_, 5,
+          "navigation_boundary", 5,
           std::bind(&SensorCoveragePlanner3D::ViewPointBoundaryCallback, this,
                     std::placeholders::_1));
   nogo_boundary_sub_ =
       this->create_subscription<geometry_msgs::msg::PolygonStamped>(
-          sub_nogo_boundary_topic_, 5,
+          "sensor_coverage_planner/nogo_boundary", 5,
           std::bind(&SensorCoveragePlanner3D::NogoBoundaryCallback, this,
                     std::placeholders::_1));
   joystick_sub_ = this->create_subscription<sensor_msgs::msg::Joy>(
-      sub_joystick_topic_, 5,
+      "joy", 5,
       std::bind(&SensorCoveragePlanner3D::JoystickCallback, this,
                 std::placeholders::_1));
   reset_waypoint_sub_ = this->create_subscription<std_msgs::msg::Empty>(
-      sub_reset_waypoint_topic_, 1,
+      "reset_waypoint", 1,
       std::bind(&SensorCoveragePlanner3D::ResetWaypointCallback, this,
                 std::placeholders::_1));
 
@@ -448,16 +377,16 @@ bool SensorCoveragePlanner3D::initialize() {
   exploration_path_publisher_ =
       this->create_publisher<nav_msgs::msg::Path>("exploration_path", 1);
   waypoint_pub_ = this->create_publisher<geometry_msgs::msg::PointStamped>(
-      pub_waypoint_topic_, 2);
+      "way_point", 2);
   exploration_finish_pub_ = this->create_publisher<std_msgs::msg::Bool>(
-      pub_exploration_finish_topic_, 2);
+      "exploration_finish", 2);
   runtime_breakdown_pub_ =
       this->create_publisher<std_msgs::msg::Int32MultiArray>(
-          pub_runtime_breakdown_topic_, 2);
+          "runtime_breakdown", 2);
   runtime_pub_ =
-      this->create_publisher<std_msgs::msg::Float32>(pub_runtime_topic_, 2);
+      this->create_publisher<std_msgs::msg::Float32>("runtime", 2);
   momentum_activation_count_pub_ = this->create_publisher<std_msgs::msg::Int32>(
-      pub_momentum_activation_count_topic_, 2);
+      "momentum_activation_count", 2);
   // Debug
   pointcloud_manager_neighbor_cells_origin_pub_ =
       this->create_publisher<geometry_msgs::msg::PointStamped>(

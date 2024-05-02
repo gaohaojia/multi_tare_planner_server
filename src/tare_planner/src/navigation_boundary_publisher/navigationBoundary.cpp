@@ -99,7 +99,7 @@ int main(int argc, char** argv)
   nh->get_parameter("sendBoundary", sendBoundary);
   nh->get_parameter("sendBoundaryInterval", sendBoundaryInterval);
 
-  auto pubBoundary = nh->create_publisher<geometry_msgs::msg::PolygonStamped>("/navigation_boundary", 5);
+  auto pubBoundary = nh->create_publisher<geometry_msgs::msg::PolygonStamped>("navigation_boundary", 5);
   geometry_msgs::msg::PolygonStamped boundaryMsgs;
   boundaryMsgs.header.frame_id = "map";
 
