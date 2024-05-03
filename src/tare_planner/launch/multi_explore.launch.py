@@ -18,6 +18,18 @@ def launch_tare_node(context: LaunchContext, scenario, robot_id):
     )
     return [tare_planner_node]
 
+def launch_rviz_node(context: LaunchContext, robot_id):
+    id_str = context.perform_substitution(robot_id)
+    rviz_node = Node(
+        package='rviz2',
+        executable='rviz2',
+        name='tare_planner_rviz',
+        arguments=[
+            '-d', get_package_share_directory('tare_planner')+'/multi_' + id_str + '.rviz'],
+        condition=IfCondition(LaunchConfiguration('rviz'))
+    )
+    return [rviz_node]
+
 def push_namespace(context: LaunchContext, robot_id):
     id_str = context.perform_substitution(robot_id)
     return [PushRosNamespace('robot_' + str(id_str))]
@@ -51,21 +63,12 @@ def generate_launch_description():
         description='Robot ID'
     )
 
-    rviz_node = Node(
-        package='rviz2',
-        executable='rviz2',
-        name='tare_planner_ground_rviz',
-        arguments=[
-            '-d', get_package_share_directory('tare_planner')+'/multi_tare_planner_ground.rviz'],
-        condition=IfCondition(LaunchConfiguration('rviz'))
-    )
-
     return LaunchDescription([
         OpaqueFunction(function=push_namespace, args=[robot_id]),
         declare_use_sim_time_cmd,
         declare_scenario,
         declare_rviz,
         declare_robot_id,
-        rviz_node,
+        OpaqueFunction(function=launch_rviz_node, args=[robot_id]),
         OpaqueFunction(function=launch_tare_node, args=[scenario, robot_id])
     ])
