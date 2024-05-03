@@ -6,14 +6,15 @@ from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node, PushRosNamespace
 
-def launch_tare_node(context: LaunchContext, scenario):
+def launch_tare_node(context: LaunchContext, scenario, robot_id):
     scenario_str = context.perform_substitution(scenario)
+    id_str = context.perform_substitution(robot_id)
     tare_planner_node = Node(
         package='tare_planner',
         executable='tare_planner_node',
         name='tare_planner_node',
         output='screen',
-        parameters=[get_package_share_directory('tare_planner')+'/' + scenario_str + '.yaml']
+        parameters=[get_package_share_directory('tare_planner')+'/' + scenario_str + '_' + id_str + '.yaml']
     )
     return [tare_planner_node]
 
@@ -66,5 +67,5 @@ def generate_launch_description():
         declare_rviz,
         declare_robot_id,
         rviz_node,
-        OpaqueFunction(function=launch_tare_node, args=[scenario])
+        OpaqueFunction(function=launch_tare_node, args=[scenario, robot_id])
     ])
