@@ -1,0 +1,38 @@
+session_name: launch_multi
+
+environment:
+  FOLDER: /home/azusa/CMU/multi_tare_planner_server/
+
+suppress_history: true
+
+windows:
+  - window_name: robot_0
+    focus: true
+    layout: tiled
+    panes:
+      - shell_command:
+        - cd $FOLDER && bash run.sh 0
+  - window_name: robot_1
+    focus: false
+    layout: tiled
+    panes:
+      - shell_command:
+        - cd $FOLDER && bash run.sh 1
+  - window_name: robot_2
+    focus: false
+    layout: tiled
+    panes:
+      - shell_command:
+        - cd $FOLDER && bash run.sh 2
+  - window_name: robot_3
+    focus: false
+    layout: tiled
+    panes:
+      - shell_command:
+        - cd $FOLDER && bash run.sh 3
+  - window_name: robot_4
+    focus: false
+    layout: tiled
+    panes:
+      - shell_command:
+        - cd $FOLDER && bash run.sh 4
