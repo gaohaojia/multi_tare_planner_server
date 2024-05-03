@@ -32,7 +32,7 @@ def generate_launch_description():
 
     declare_scenario = DeclareLaunchArgument(
         'scenario',
-        default_value='garage',
+        default_value='multi',
         description='description for scenario argument'
     )
 
