@@ -22,7 +22,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(
             [get_package_share_directory('tare_planner'), '/explore.launch.py']),
         launch_arguments={
-            'scenario': 'garage',
+            'scenario': 'indoor',
             'rviz': LaunchConfiguration('rviz')
         }.items())
 
