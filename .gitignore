@@ -5,3 +5,4 @@ install/
 devel/
 .clang-format
 .vscode/
+.cache
