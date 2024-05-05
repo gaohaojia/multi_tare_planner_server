@@ -17,35 +17,42 @@ TAREVisualizer::TAREVisualizer(rclcpp::Node::SharedPtr nh)
 {
   ReadParameters(nh);
 
-  marker_publisher_ = nh->create_publisher<visualization_msgs::msg::Marker>("tare_visualizer/marker", 1);
-  local_path_publisher_ = nh->create_publisher<nav_msgs::msg::Path>("tare_visualizer/local_path", 1);
+  marker_publisher_ =
+    nh->create_publisher<visualization_msgs::msg::Marker>("tare_visualizer/marker", 1);
+  local_path_publisher_ =
+    nh->create_publisher<nav_msgs::msg::Path>("tare_visualizer/local_path", 1);
 
-  global_subspaces_marker_ =
-      std::make_shared<misc_utils_ns::Marker>(nh, "tare_visualizer/exploring_subspaces", kWorldFrameID);
-  local_planning_horizon_marker_ =
-      std::make_shared<misc_utils_ns::Marker>(nh, "tare_visualizer/local_planning_horizon", kWorldFrameID);
+  global_subspaces_marker_ = std::make_shared<misc_utils_ns::Marker>(
+    nh, "tare_visualizer/exploring_subspaces", kWorldFrameID);
+  local_planning_horizon_marker_ = std::make_shared<misc_utils_ns::Marker>(
+    nh, "tare_visualizer/local_planning_horizon", kWorldFrameID);
 
   uncovered_surface_point_cloud_ = std::make_shared<pointcloud_utils_ns::PCLCloud<pcl::PointXYZI>>(
-      nh, "tare_visualizer/uncovered_surface_points", kWorldFrameID);
+    nh, "tare_visualizer/uncovered_surface_points", kWorldFrameID);
   viewpoint_candidate_cloud_ = std::make_shared<pointcloud_utils_ns::PCLCloud<pcl::PointXYZI>>(
-      nh, "tare_visualizer/viewpoint_candidates", kWorldFrameID);
-  viewpoint_cloud_ =
-      std::make_shared<pointcloud_utils_ns::PCLCloud<pcl::PointXYZI>>(nh, "tare_visualizer/viewpoints", kWorldFrameID);
+    nh, "tare_visualizer/viewpoint_candidates", kWorldFrameID);
+  viewpoint_cloud_ = std::make_shared<pointcloud_utils_ns::PCLCloud<pcl::PointXYZI>>(
+    nh, "tare_visualizer/viewpoints", kWorldFrameID);
 
   InitializeMarkers();
 }
 bool TAREVisualizer::ReadParameters(rclcpp::Node::SharedPtr nh)
 {
-  nh->get_parameter("kExploringSubspaceMarkerColorGradientAlpha", kExploringSubspaceMarkerColorGradientAlpha);
+  nh->get_parameter("kExploringSubspaceMarkerColorGradientAlpha",
+                    kExploringSubspaceMarkerColorGradientAlpha);
   nh->get_parameter("kExploringSubspaceMarkerColorMaxAlpha", kExploringSubspaceMarkerColorMaxAlpha);
   kExploringSubspaceMarkerColor.r = nh->get_parameter("kExploringSubspaceMarkerColorR").as_double();
   kExploringSubspaceMarkerColor.g = nh->get_parameter("kExploringSubspaceMarkerColorG").as_double();
   kExploringSubspaceMarkerColor.b = nh->get_parameter("kExploringSubspaceMarkerColorB").as_double();
   kExploringSubspaceMarkerColor.a = nh->get_parameter("kExploringSubspaceMarkerColorA").as_double();
-  kLocalPlanningHorizonMarkerColor.r = nh->get_parameter("kLocalPlanningHorizonMarkerColorR").as_double();
-  kLocalPlanningHorizonMarkerColor.g = nh->get_parameter("kLocalPlanningHorizonMarkerColorG").as_double();
-  kLocalPlanningHorizonMarkerColor.b = nh->get_parameter("kLocalPlanningHorizonMarkerColorB").as_double();
-  kLocalPlanningHorizonMarkerColor.a = nh->get_parameter("kLocalPlanningHorizonMarkerColorA").as_double();
+  kLocalPlanningHorizonMarkerColor.r =
+    nh->get_parameter("kLocalPlanningHorizonMarkerColorR").as_double();
+  kLocalPlanningHorizonMarkerColor.g =
+    nh->get_parameter("kLocalPlanningHorizonMarkerColorG").as_double();
+  kLocalPlanningHorizonMarkerColor.b =
+    nh->get_parameter("kLocalPlanningHorizonMarkerColorB").as_double();
+  kLocalPlanningHorizonMarkerColor.a =
+    nh->get_parameter("kLocalPlanningHorizonMarkerColorA").as_double();
   nh->get_parameter("kLocalPlanningHorizonMarkerColorA", kLocalPlanningHorizonMarkerWidth);
   int viewpoint_num_x = nh->get_parameter("viewpoint_manager/number_x").as_int();
   int viewpoint_num_y = nh->get_parameter("viewpoint_manager/number_y").as_int();
@@ -63,7 +70,8 @@ bool TAREVisualizer::ReadParameters(rclcpp::Node::SharedPtr nh)
 void TAREVisualizer::InitializeMarkers()
 {
   global_subspaces_marker_->SetType(visualization_msgs::msg::Marker::CUBE_LIST);
-  global_subspaces_marker_->SetScale(kGlobalSubspaceSize, kGlobalSubspaceSize, kGlobalSubspaceHeight);
+  global_subspaces_marker_->SetScale(
+    kGlobalSubspaceSize, kGlobalSubspaceSize, kGlobalSubspaceHeight);
   global_subspaces_marker_->SetColorRGBA(kExploringSubspaceMarkerColor);
 
   local_planning_horizon_marker_->SetType(visualization_msgs::msg::Marker::LINE_LIST);
@@ -147,17 +155,16 @@ void TAREVisualizer::GetLocalPlanningHorizonMarker(double x, double y, double z)
   local_planning_horizon_marker_->marker_.points.push_back(upper_right2);
 }
 
-void TAREVisualizer::GetGlobalSubspaceMarker(const std::shared_ptr<grid_world_ns::GridWorld>& grid_world,
-                                             const std::vector<int>& ordered_cell_indices)
+void TAREVisualizer::GetGlobalSubspaceMarker(
+  const std::shared_ptr<grid_world_ns::GridWorld>& grid_world,
+  const std::vector<int>& ordered_cell_indices)
 {
   global_subspaces_marker_->marker_.points.clear();
   global_subspaces_marker_->marker_.colors.clear();
   int cell_num = ordered_cell_indices.size();
-  for (int i = 0; i < cell_num; i++)
-  {
+  for (int i = 0; i < cell_num; i++) {
     int cell_ind = ordered_cell_indices[i];
-    if (!grid_world->IndInBound(cell_ind))
-    {
+    if (!grid_world->IndInBound(cell_ind)) {
       continue;
     }
     geometry_msgs::msg::Point cell_center = grid_world->GetCellPosition(cell_ind);
@@ -165,12 +172,9 @@ void TAREVisualizer::GetGlobalSubspaceMarker(const std::shared_ptr<grid_world_ns
     color.r = 0.0;
     color.g = 1.0;
     color.b = 0.0;
-    if (kExploringSubspaceMarkerColorGradientAlpha)
-    {
+    if (kExploringSubspaceMarkerColorGradientAlpha) {
       color.a = ((cell_num - i) * 1.0 / cell_num) * kExploringSubspaceMarkerColorMaxAlpha;
-    }
-    else
-    {
+    } else {
       color.a = 1.0;
     }
     global_subspaces_marker_->marker_.points.push_back(cell_center);
@@ -181,16 +185,13 @@ void TAREVisualizer::GetGlobalSubspaceMarker(const std::shared_ptr<grid_world_ns
 void TAREVisualizer::PublishMarkers()
 {
   local_planning_horizon_marker_->Publish();
-  if (!global_subspaces_marker_->marker_.points.empty())
-  {
+  if (!global_subspaces_marker_->marker_.points.empty()) {
     global_subspaces_marker_->SetAction(visualization_msgs::msg::Marker::ADD);
     global_subspaces_marker_->Publish();
-  }
-  else
-  {
+  } else {
     global_subspaces_marker_->SetAction(visualization_msgs::msg::Marker::DELETE);
     global_subspaces_marker_->Publish();
   }
 }
 
-}  // namespace tare_visualizer_ns
+} // namespace tare_visualizer_ns

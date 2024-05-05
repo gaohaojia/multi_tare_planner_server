@@ -1,5 +1,5 @@
-#include <rclcpp/rclcpp.hpp>
 #include "sensor_coverage_planner/sensor_coverage_planner_ground.h"
+#include <rclcpp/rclcpp.hpp>
 
 int main(int argc, char** argv)
 {

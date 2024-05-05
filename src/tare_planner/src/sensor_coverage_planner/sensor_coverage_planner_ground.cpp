@@ -447,7 +447,7 @@ void SensorCoveragePlanner3D::TerrainMapCallback(
   pcl::PointCloud<pcl::PointXYZI>::Ptr terrain_map_tmp(new pcl::PointCloud<pcl::PointXYZI>());
   pcl::fromROSMsg<pcl::PointXYZI>(*terrain_map_msg, *terrain_map_tmp);
   terrain_collision_cloud_->cloud_->clear();
-  for (auto & point : terrain_map_tmp->points) {
+  for (auto& point : terrain_map_tmp->points) {
     if (point.intensity > kTerrainCollisionThreshold) {
       terrain_collision_cloud_->cloud_->points.push_back(point);
     }
@@ -465,7 +465,7 @@ void SensorCoveragePlanner3D::TerrainMapExtCallback(
   }
   pcl::fromROSMsg<pcl::PointXYZI>(*terrain_map_ext_msg, *(large_terrain_cloud_->cloud_));
   terrain_ext_collision_cloud_->cloud_->clear();
-  for (auto & point : large_terrain_cloud_->cloud_->points) {
+  for (auto& point : large_terrain_cloud_->cloud_->points) {
     if (point.intensity > kTerrainCollisionThreshold) {
       terrain_ext_collision_cloud_->cloud_->points.push_back(point);
     }
@@ -533,7 +533,8 @@ void SensorCoveragePlanner3D::NogoBoundaryCallback(
 
 void SensorCoveragePlanner3D::JoystickCallback(const sensor_msgs::msg::Joy::ConstSharedPtr joy_msg)
 {
-  if (kResetWaypointJoystickButton >= 0 && kResetWaypointJoystickButton < int(joy_msg->buttons.size())) {
+  if (kResetWaypointJoystickButton >= 0 &&
+      kResetWaypointJoystickButton < int(joy_msg->buttons.size())) {
     if (joy_msg->buttons[kResetWaypointJoystickButton] == 1) {
       reset_waypoint_ = true;
       std::cout << "reset waypoint" << std::endl;
@@ -638,7 +639,7 @@ void SensorCoveragePlanner3D::UpdateViewPointCoverage()
 void SensorCoveragePlanner3D::UpdateRobotViewPointCoverage()
 {
   pcl::PointCloud<pcl::PointXYZI>::Ptr cloud = planning_env_->GetCollisionCloud();
-  for (const auto & point : cloud->points) {
+  for (const auto& point : cloud->points) {
     if (viewpoint_manager_->InFOVAndRange(
           Eigen::Vector3d(point.x, point.y, point.z),
           Eigen::Vector3d(robot_position_.x, robot_position_.y, robot_position_.z))) {
@@ -647,8 +648,8 @@ void SensorCoveragePlanner3D::UpdateRobotViewPointCoverage()
   }
 }
 
-void SensorCoveragePlanner3D::UpdateCoveredAreas(int & uncovered_point_num,
-                                                 int & uncovered_frontier_point_num)
+void SensorCoveragePlanner3D::UpdateCoveredAreas(int& uncovered_point_num,
+                                                 int& uncovered_frontier_point_num)
 {
   // Update covered area
   misc_utils_ns::Timer update_coverage_area_timer("update covered area");
@@ -728,8 +729,8 @@ void SensorCoveragePlanner3D::UpdateGlobalRepresentation()
   }
 }
 
-void SensorCoveragePlanner3D::GlobalPlanning(std::vector<int> & global_cell_tsp_order,
-                                             exploration_path_ns::ExplorationPath & global_path)
+void SensorCoveragePlanner3D::GlobalPlanning(std::vector<int>& global_cell_tsp_order,
+                                             exploration_path_ns::ExplorationPath& global_path)
 {
   misc_utils_ns::Timer global_tsp_timer("Global planning");
   global_tsp_timer.Start();
@@ -748,8 +749,8 @@ void SensorCoveragePlanner3D::GlobalPlanning(std::vector<int> & global_cell_tsp_
 }
 
 void SensorCoveragePlanner3D::PublishGlobalPlanningVisualization(
-  const exploration_path_ns::ExplorationPath & global_path,
-  const exploration_path_ns::ExplorationPath & local_path)
+  const exploration_path_ns::ExplorationPath& global_path,
+  const exploration_path_ns::ExplorationPath& local_path)
 {
   nav_msgs::msg::Path global_path_full = global_path.GetPath();
   global_path_full.header.frame_id = "map";
@@ -817,11 +818,10 @@ void SensorCoveragePlanner3D::PublishGlobalPlanningVisualization(
   // planning_env_->PublishStackedCloud();
 }
 
-void SensorCoveragePlanner3D::LocalPlanning(
-  int uncovered_point_num,
-  int uncovered_frontier_point_num,
-  const exploration_path_ns::ExplorationPath & global_path,
-  exploration_path_ns::ExplorationPath & local_path)
+void SensorCoveragePlanner3D::LocalPlanning(int uncovered_point_num,
+                                            int uncovered_frontier_point_num,
+                                            const exploration_path_ns::ExplorationPath& global_path,
+                                            exploration_path_ns::ExplorationPath& local_path)
 {
   misc_utils_ns::Timer local_tsp_timer("Local planning");
   local_tsp_timer.Start();
@@ -834,7 +834,7 @@ void SensorCoveragePlanner3D::LocalPlanning(
 }
 
 void SensorCoveragePlanner3D::PublishLocalPlanningVisualization(
-  const exploration_path_ns::ExplorationPath & local_path)
+  const exploration_path_ns::ExplorationPath& local_path)
 {
   viewpoint_manager_->GetVisualizationCloud(viewpoint_vis_cloud_->cloud_);
   viewpoint_vis_cloud_->Publish();
@@ -850,8 +850,8 @@ void SensorCoveragePlanner3D::PublishLocalPlanningVisualization(
 }
 
 exploration_path_ns::ExplorationPath SensorCoveragePlanner3D::ConcatenateGlobalLocalPath(
-  const exploration_path_ns::ExplorationPath & global_path,
-  const exploration_path_ns::ExplorationPath & local_path)
+  const exploration_path_ns::ExplorationPath& global_path,
+  const exploration_path_ns::ExplorationPath& local_path)
 {
   exploration_path_ns::ExplorationPath full_path;
   if (exploration_finished_ && near_home_ && kRushHome) {
@@ -888,9 +888,9 @@ exploration_path_ns::ExplorationPath SensorCoveragePlanner3D::ConcatenateGlobalL
 }
 
 bool SensorCoveragePlanner3D::GetLookAheadPoint(
-  const exploration_path_ns::ExplorationPath & local_path,
-  const exploration_path_ns::ExplorationPath & global_path,
-  Eigen::Vector3d & lookahead_point)
+  const exploration_path_ns::ExplorationPath& local_path,
+  const exploration_path_ns::ExplorationPath& global_path,
+  Eigen::Vector3d& lookahead_point)
 {
   Eigen::Vector3d robot_position(robot_position_.x, robot_position_.y, robot_position_.z);
 
