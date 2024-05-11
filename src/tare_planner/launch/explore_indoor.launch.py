@@ -31,12 +31,12 @@ def generate_launch_description():
         executable='navigationBoundary',
         name='navigationBoundary',
         output='screen',
-        parameters=[
-            {'boundary_file_dir': get_package_share_directory(
-                'tare_planner') + '/data/boundary.ply'},
-            {'sendBoundary': True},
-            {'sendBoundaryInterval': 2}
-        ],
+        parameters=[{
+            'boundary_file_dir': 
+                get_package_share_directory('tare_planner') + '/data/boundary.ply',
+            'sendBoundary': True,
+            'sendBoundaryInterval': 2
+        }],
         condition=IfCondition(LaunchConfiguration('use_boundary')))
 
     return LaunchDescription([
