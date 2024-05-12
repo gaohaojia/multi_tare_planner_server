@@ -13,7 +13,7 @@
 
 using namespace std;
 
-const double PI = 3.1415926;
+// const double PI = 3.1415926;
 
 string boundary_file_dir;
 bool sendBoundary = true;

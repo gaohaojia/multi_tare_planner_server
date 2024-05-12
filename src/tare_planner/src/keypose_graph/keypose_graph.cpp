@@ -9,7 +9,7 @@
 namespace keypose_graph_ns
 {
 KeyposeNode::KeyposeNode(double x, double y, double z, int node_ind, int keypose_id, bool is_keypose)
-  : cell_ind_(0), node_ind_(node_ind), keypose_id_(keypose_id), is_keypose_(is_keypose), is_connected_(true)
+  : keypose_id_(keypose_id), node_ind_(node_ind), cell_ind_(0), is_keypose_(is_keypose), is_connected_(true)
 {
   position_.x = x;
   position_.y = y;
@@ -29,11 +29,11 @@ KeyposeGraph::KeyposeGraph(rclcpp::Node::SharedPtr nh)
   : allow_vertical_edge_(false)
   , current_keypose_id_(0)
   , kAddNodeMinDist(1.0)
-  , kAddEdgeCollisionCheckResolution(0.4)
-  , kAddEdgeCollisionCheckRadius(0.3)
   , kAddEdgeConnectDistThr(3.0)
   , kAddEdgeToLastKeyposeDistThr(3.0)
   , kAddEdgeVerticalThreshold(1.0)
+  , kAddEdgeCollisionCheckResolution(0.4)
+  , kAddEdgeCollisionCheckRadius(0.3)
   , kAddEdgeCollisionCheckPointNumThr(1)
 {
   ReadParameters(nh);

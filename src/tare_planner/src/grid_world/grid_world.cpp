@@ -18,14 +18,14 @@
 namespace grid_world_ns
 {
 Cell::Cell(double x, double y, double z)
-  : in_horizon_(false)
-  , robot_position_set_(false)
+  : robot_position_set_(false)
   , visit_count_(0)
+  , in_horizon_(false)
   , keypose_id_(0)
-  , path_added_to_keypose_graph_(false)
-  , roadmap_connection_point_set_(false)
   , viewpoint_position_(Eigen::Vector3d(x, y, z))
   , roadmap_connection_point_(Eigen::Vector3d(x, y, z))
+  , path_added_to_keypose_graph_(false)
+  , roadmap_connection_point_set_(false)
 {
   center_.x = x;
   center_.y = y;
@@ -117,13 +117,13 @@ GridWorld::GridWorld(int row_num, int col_num, int level_num, double cell_size, 
   , kCellExploringToAlmostCoveredThr(10)
   , kCellAlmostCoveredToExploringThr(20)
   , kCellUnknownToExploringThr(1)
+  , initialized_(false)
+  , use_keypose_graph_(false)
   , cur_keypose_id_(0)
+  , cur_keypose_(0, 0, 0)
   , cur_keypose_graph_node_ind_(0)
   , cur_robot_cell_ind_(-1)
   , prev_robot_cell_ind_(-1)
-  , cur_keypose_(0, 0, 0)
-  , initialized_(false)
-  , use_keypose_graph_(false)
 {
   robot_position_.x = 0.0;
   robot_position_.y = 0.0;

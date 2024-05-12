@@ -22,11 +22,11 @@ ViewPoint::ViewPoint(double x, double y, double z)
   , selected_(false)
   , is_candidate_(false)
   , has_terrain_height_(false)
-  , has_terrain_neighbor_(false)
   , in_exploring_cell_(false)
   , cell_ind_(-1)
   , collision_frame_count_(0)
   , terrain_height_(0.0)
+  , has_terrain_neighbor_(false)
 {
 }
 

@@ -508,8 +508,8 @@ void SensorCoveragePlanner3D::NogoBoundaryCallback(
   viewpoint_manager_->UpdateNogoBoundary(nogo_boundary);
 
   geometry_msgs::msg::Point point;
-  for (unsigned int i = 0; i < nogo_boundary.size(); i++) {
-    for (unsigned int j = 0; j < nogo_boundary[i].points.size() - 1; j++) {
+  for (int i = 0; i < nogo_boundary.size(); i++) {
+    for (int j = 0; j < nogo_boundary[i].points.size() - 1; j++) {
       point.x = nogo_boundary[i].points[j].x;
       point.y = nogo_boundary[i].points[j].y;
       point.z = nogo_boundary[i].points[j].z;
@@ -671,7 +671,7 @@ void SensorCoveragePlanner3D::UpdateVisitedPositions()
 {
   Eigen::Vector3d robot_current_position(robot_position_.x, robot_position_.y, robot_position_.z);
   bool existing = false;
-  for (unsigned int i = 0; i < visited_positions_.size(); i++) {
+  for (int i = 0; i < visited_positions_.size(); i++) {
     // TODO: parameterize this
     if ((robot_current_position - visited_positions_[i]).norm() < 1) {
       existing = true;
@@ -759,7 +759,7 @@ void SensorCoveragePlanner3D::PublishGlobalPlanningVisualization(
   // Get the part that connects with the local path
 
   int start_index = 0;
-  for (unsigned int i = 0; i < global_path.nodes_.size(); i++) {
+  for (int i = 0; i < global_path.nodes_.size(); i++) {
     if (global_path.nodes_[i].type_ == exploration_path_ns::NodeType::GLOBAL_VIEWPOINT ||
         global_path.nodes_[i].type_ == exploration_path_ns::NodeType::HOME ||
         !viewpoint_manager_->InLocalPlanningHorizon(global_path.nodes_[i].position_)) {
@@ -896,7 +896,7 @@ bool SensorCoveragePlanner3D::GetLookAheadPoint(
 
   // Determine which direction to follow on the global path
   double dist_from_start = 0.0;
-  for (unsigned int i = 1; i < global_path.nodes_.size(); i++) {
+  for (int i = 1; i < global_path.nodes_.size(); i++) {
     dist_from_start +=
       (global_path.nodes_[i - 1].position_ - global_path.nodes_[i].position_).norm();
     if (global_path.nodes_[i].type_ == exploration_path_ns::NodeType::GLOBAL_VIEWPOINT) {
@@ -913,7 +913,7 @@ bool SensorCoveragePlanner3D::GetLookAheadPoint(
   }
 
   bool local_path_too_short = true;
-  for (unsigned int i = 0; i < local_path.nodes_.size(); i++) {
+  for (int i = 0; i < local_path.nodes_.size(); i++) {
     double dist_to_robot = (robot_position - local_path.nodes_[i].position_).norm();
     if (dist_to_robot > kLookAheadDistance / 5) {
       local_path_too_short = false;
@@ -923,7 +923,7 @@ bool SensorCoveragePlanner3D::GetLookAheadPoint(
   if (local_path.GetNodeNum() < 1 || local_path_too_short) {
     double dist_from_robot = 0.0;
     if (dist_from_start < dist_from_end) {
-      for (unsigned int i = 1; i < global_path.nodes_.size(); i++) {
+      for (int i = 1; i < global_path.nodes_.size(); i++) {
         dist_from_robot +=
           (global_path.nodes_[i - 1].position_ - global_path.nodes_[i].position_).norm();
         if (dist_from_robot > kLookAheadDistance / 2) {
@@ -948,7 +948,7 @@ bool SensorCoveragePlanner3D::GetLookAheadPoint(
   // bool dir = true;
   int robot_i = 0;
   int lookahead_i = 0;
-  for (unsigned int i = 0; i < local_path.nodes_.size(); i++) {
+  for (int i = 0; i < local_path.nodes_.size(); i++) {
     if (local_path.nodes_[i].type_ == exploration_path_ns::NodeType::ROBOT) {
       robot_i = i;
     }
@@ -1225,7 +1225,7 @@ void SensorCoveragePlanner3D::PublishRuntime()
 
   float runtime = 0;
   if (!exploration_finished_ && kNoExplorationReturnHome) {
-    for (unsigned int i = 0; i < runtime_breakdown_msg.data.size() - 1; i++) {
+    for (int i = 0; i < runtime_breakdown_msg.data.size() - 1; i++) {
       runtime += runtime_breakdown_msg.data[i];
     }
   }

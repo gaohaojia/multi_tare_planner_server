@@ -46,9 +46,9 @@ void PlanningEnvParameters::ReadParameters(rclcpp::Node::SharedPtr nh)
 
 PlanningEnv::PlanningEnv(rclcpp::Node::SharedPtr nh, std::string world_frame_id)
   : keypose_cloud_count_(0)
+  , robot_position_update_(false)
   , vertical_surface_extractor_()
   , vertical_frontier_extractor_()
-  , robot_position_update_(false)
 {
   parameters_.ReadParameters(nh);
 
