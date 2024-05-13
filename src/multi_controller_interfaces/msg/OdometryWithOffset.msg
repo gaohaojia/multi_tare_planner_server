@@ -1,2 +1,0 @@
-geometry_msgs/Pose offset_pose
-nav_msgs/Odometry odometry

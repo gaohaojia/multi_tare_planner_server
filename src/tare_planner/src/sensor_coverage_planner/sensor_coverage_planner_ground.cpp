@@ -308,11 +308,11 @@ bool SensorCoveragePlanner3D::initialize()
     5,
     std::bind(&SensorCoveragePlanner3D::RegisteredScanCallback, this, std::placeholders::_1));
   terrain_map_sub_ = this->create_subscription<sensor_msgs::msg::PointCloud2>(
-    "terrain_map",
+    "/total_terrain_map",
     5,
     std::bind(&SensorCoveragePlanner3D::TerrainMapCallback, this, std::placeholders::_1));
   terrain_map_ext_sub_ = this->create_subscription<sensor_msgs::msg::PointCloud2>(
-    "terrain_map_ext",
+    "/total_terrain_map_ext",
     5,
     std::bind(&SensorCoveragePlanner3D::TerrainMapExtCallback, this, std::placeholders::_1));
   state_estimation_sub_ = this->create_subscription<nav_msgs::msg::Odometry>(
