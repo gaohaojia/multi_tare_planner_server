@@ -316,7 +316,7 @@ bool SensorCoveragePlanner3D::initialize()
     5,
     std::bind(&SensorCoveragePlanner3D::TerrainMapExtCallback, this, std::placeholders::_1));
   state_estimation_sub_ = this->create_subscription<nav_msgs::msg::Odometry>(
-    "state_estimation_at_scan",
+    "total_state_estimation_at_scan",
     5,
     std::bind(&SensorCoveragePlanner3D::StateEstimationCallback, this, std::placeholders::_1));
   coverage_boundary_sub_ = this->create_subscription<geometry_msgs::msg::PolygonStamped>(
