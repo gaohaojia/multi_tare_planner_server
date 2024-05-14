@@ -304,7 +304,7 @@ bool SensorCoveragePlanner3D::initialize()
     5,
     std::bind(&SensorCoveragePlanner3D::ExplorationStartCallback, this, std::placeholders::_1));
   registered_scan_sub_ = this->create_subscription<sensor_msgs::msg::PointCloud2>(
-    "registered_scan",
+    "total_registered_scan",
     5,
     std::bind(&SensorCoveragePlanner3D::RegisteredScanCallback, this, std::placeholders::_1));
   terrain_map_sub_ = this->create_subscription<sensor_msgs::msg::PointCloud2>(
